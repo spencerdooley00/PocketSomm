@@ -5,28 +5,21 @@
 //  Created by Spencer Dooley on 11/27/25.
 //
 
+
 import SwiftUI
 import SwiftData
 
 @main
 struct PocketSommApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+    @StateObject private var appState = AppState()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack {
+                RootView()
+            }
+            .environmentObject(appState)
         }
-        .modelContainer(sharedModelContainer)
     }
 }
+
