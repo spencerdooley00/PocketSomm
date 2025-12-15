@@ -1,12 +1,15 @@
 //
-//  AddFavoriteByNameView.swift
+//  AddFavoriteByNameView_updated.swift
 //  PocketSomm
 //
 //  Created by Spencer Dooley on 11/28/25.
+//  Updated to integrate the PocketSomm design system without changing class names or methods.
 //
 
 import SwiftUI
 
+/// This view allows a user to add a wine to their favourites by entering its name.
+/// It has been updated to use the design system defined in `PocketSommTheme.swift`.
 struct AddFavoriteByNameView: View {
     @EnvironmentObject var appState: AppState
 
@@ -78,7 +81,8 @@ struct AddFavoriteByNameView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
             }
-            .buttonStyle(.borderedProminent)
+            // Use primary button style for the search action
+            .buttonStyle(PrimaryButtonStyle())
             .disabled(wineName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || isResolving)
         }
     }
@@ -128,6 +132,7 @@ struct AddFavoriteByNameView: View {
                     Text("Not quite")
                         .frame(maxWidth: .infinity)
                 }
+                // Keep a secondary style for the cancel action
                 .buttonStyle(.bordered)
 
                 Button {
@@ -142,14 +147,15 @@ struct AddFavoriteByNameView: View {
                             .frame(maxWidth: .infinity)
                     }
                 }
-                .buttonStyle(.borderedProminent)
+                // Use primary style for the confirm action
+                .buttonStyle(PrimaryButtonStyle())
                 .disabled(isSaving)
             }
         }
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.secondary.opacity(0.06))
-        .cornerRadius(18)
+        // Apply PocketSomm card styling from the design system instead of custom background and corner radius
+        .pocketCardStyle()
     }
 
     // MARK: - Actions

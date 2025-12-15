@@ -1,8 +1,9 @@
 //
-//  AddFavoritesFromPhotoView.swift
+//  AddFavoritesFromPhotoView_updated.swift
 //  PocketSomm
 //
 //  Created by Spencer Dooley on 11/26/25.
+//  Updated to apply PocketSomm design system styles.
 //
 
 import SwiftUI
@@ -11,7 +12,6 @@ import UIKit
 
 struct AddFavoriteFromPhotoView: View {
     @EnvironmentObject var appState: AppState
-
     @State private var selectedItem: PhotosPickerItem?
     @State private var selectedImageData: Data?
     @State private var showCamera = false
@@ -21,28 +21,20 @@ struct AddFavoriteFromPhotoView: View {
         ScrollView {
             VStack(spacing: 20) {
                 headerSection
-
                 if appState.showSuccessBanner {
                     successBanner
                 }
-
                 photoPickerSection
-
                 photoPreviewSection
-
                 statusSection
-
                 if let profile = appState.lastWineProfile {
                     profileCard(profile)
                 }
-
                 Spacer(minLength: 24)
             }
             .padding(.horizontal)
             .padding(.top, 24)
         }
-        .navigationTitle("Add by Photo")
-        .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("Add by Photo")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showCamera) {
@@ -63,7 +55,6 @@ struct AddFavoriteFromPhotoView: View {
                 await handlePickedItem(item)
             }
         }
-
     }
 
     // MARK: - Sections
@@ -72,7 +63,6 @@ struct AddFavoriteFromPhotoView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Add a wine you liked")
                 .font(.title2.weight(.semibold))
-
             Text("Snap or choose a photo of the bottle label. We’ll recognize it and add it to your favorites.")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
@@ -105,11 +95,9 @@ struct AddFavoriteFromPhotoView: View {
                     Text("Take Photo")
                 }
                 .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.accentColor)
-                .foregroundColor(.white)
-                .cornerRadius(14)
             }
+            // Apply primary button style
+            .buttonStyle(PrimaryButtonStyle())
             .disabled(appState.isUploadingPhoto)
 
             Button {
@@ -120,16 +108,12 @@ struct AddFavoriteFromPhotoView: View {
                     Text(selectedImageData == nil ? "Choose Photo" : "Choose Another Photo")
                 }
                 .frame(maxWidth: .infinity)
-                .padding()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 14)
-                        .stroke(Color.accentColor, lineWidth: 1)
-                )
             }
+            // Use primary button style to unify secondary action; overlay border is removed
+            .buttonStyle(PrimaryButtonStyle())
             .disabled(appState.isUploadingPhoto)
         }
     }
-
 
     private var photoPreviewSection: some View {
         Group {
@@ -187,13 +171,11 @@ struct AddFavoriteFromPhotoView: View {
         VStack(alignment: .leading, spacing: 10) {
             Text(profile.resolvedName ?? "Unknown wine")
                 .font(.headline)
-
             if let producer = profile.producer {
                 Text(producer)
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
-
             HStack(spacing: 6) {
                 if let region = profile.region {
                     Text(region)
@@ -204,21 +186,17 @@ struct AddFavoriteFromPhotoView: View {
             }
             .font(.subheadline)
             .foregroundColor(.secondary)
-
             if let grapes = profile.grapes, !grapes.isEmpty {
                 Text("Grapes: \(grapes.joined(separator: ", "))")
                     .font(.footnote)
                     .foregroundColor(.secondary)
             }
-
             if let notes = profile.notes {
                 Text(notes)
                     .font(.footnote)
                     .foregroundColor(.primary)
             }
-
             Button(role: .none) {
-                // Let user start over if they want to add another wine
                 selectedImageData = nil
                 appState.resetCurrentPhotoFlow()
             } label: {
@@ -227,11 +205,10 @@ struct AddFavoriteFromPhotoView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 8)
             }
-            .buttonStyle(.bordered)
+            // Use primary button style for call to action
+            .buttonStyle(PrimaryButtonStyle())
         }
-        .padding()
-        .background(Color.secondary.opacity(0.07))
-        .cornerRadius(14)
+        .pocketCardStyle()
     }
 
     // MARK: - Logic
@@ -252,11 +229,9 @@ struct AddFavoriteFromPhotoView: View {
     }
     private func handlePickedImage(_ image: UIImage) async {
         guard let data = image.jpegData(compressionQuality: 0.9) else { return }
-
         await MainActor.run {
             self.selectedImageData = data
         }
         await appState.addFavoriteFromPhoto(imageData: data)
     }
-
 }

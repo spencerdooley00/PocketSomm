@@ -3,8 +3,8 @@
 //  PocketSomm
 //
 //  Created by Spencer Dooley on 11/27/25.
+//  Modified to use a tab bar navigation.
 //
-
 
 import SwiftUI
 import SwiftData
@@ -15,11 +15,9 @@ struct PocketSommApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                RootView()
-            }
-            .environmentObject(appState)
+            // Use the MainTabView as the top level navigation structure.
+            MainTabView()
+                .environmentObject(appState)
         }
     }
 }
-

@@ -1,5 +1,5 @@
 //
-//  AppState.swift
+//  AppState_updated.swift
 //  PocketSomm
 //
 //  Updated application state to integrate with the new API client and error types.

@@ -1,9 +1,11 @@
 //
-//  WineDetailView.swift
+//  WineDetailView_updated.swift
 //  PocketSomm
 //
 //  Created by Spencer Dooley on 11/27/25.
+//  Updated to apply PocketSomm design system styles.
 //
+
 import SwiftUI
 import UIKit
 
@@ -70,8 +72,6 @@ struct WineDetailView: View {
 
     private func headerCard(_ wine: WineDetailDTO) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-
-            // ✅ local photo takes priority
             if let base64 = wine.imageBase64,
                let data = Data(base64Encoded: base64),
                let uiImage = UIImage(data: data) {
@@ -100,17 +100,12 @@ struct WineDetailView: View {
                     }
                 }
             }
-
-            // ... existing name / producer / region stuff ...
+            // Display name
             Text(wine.displayName)
                 .font(.title2.weight(.semibold))
-            // ...
         }
-        .cardStyle()
+        .pocketCardStyle()
     }
-
-
-
 
     private func metaCard(_ wine: WineDetailDTO) -> some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -120,19 +115,15 @@ struct WineDetailView: View {
             if let grapesLine = wine.grapesLine {
                 profileRow(label: "Grapes", value: grapesLine)
             }
-
             if let country = wine.country {
                 profileRow(label: "Country", value: country)
             }
-
             if let region = wine.region {
                 profileRow(label: "Region", value: region)
             }
-
             if let appellation = wine.appellation, !appellation.isEmpty {
                 profileRow(label: "Appellation", value: appellation)
             }
-
             if let text = wine.embeddingText, !text.isEmpty {
                 Divider().padding(.vertical, 6)
                 Text("Style summary")
@@ -142,7 +133,7 @@ struct WineDetailView: View {
                     .foregroundColor(.secondary)
             }
         }
-        .cardStyle()
+        .pocketCardStyle()
     }
 
     private func tastingFormCard() -> some View {
@@ -184,7 +175,8 @@ struct WineDetailView: View {
                         .padding(.vertical, 6)
                 }
             }
-            .buttonStyle(.borderedProminent)
+            // Apply primary button style instead of default borderedProminent
+            .buttonStyle(PrimaryButtonStyle())
             .disabled(isSavingTasting)
 
             if let msg = tastingSaveMessage {
@@ -193,7 +185,7 @@ struct WineDetailView: View {
                     .foregroundColor(.secondary)
             }
         }
-        .cardStyle()
+        .pocketCardStyle()
     }
 
     private func pastTastingsCard() -> some View {
@@ -208,7 +200,6 @@ struct WineDetailView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Your tastings")
                     .font(.headline)
-
                 ForEach(tastings.sorted(by: { ($0.timestamp ?? "") > ($1.timestamp ?? "") })) { t in
                     VStack(alignment: .leading, spacing: 4) {
                         HStack {
@@ -232,13 +223,12 @@ struct WineDetailView: View {
                         }
                     }
                     .padding(.vertical, 4)
-
                     if t.id != tastings.last?.id {
                         Divider().opacity(0.3)
                     }
                 }
             }
-            .cardStyle()
+            .pocketCardStyle()
         )
     }
 
@@ -246,7 +236,6 @@ struct WineDetailView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Similar wines")
                 .font(.headline)
-
             if let similar = similarWines {
                 ForEach(similar) { item in
                     NavigationLink {
@@ -264,7 +253,6 @@ struct WineDetailView: View {
                         .padding(.vertical, 4)
                     }
                     .buttonStyle(.plain)
-
                     if item.id != similar.last?.id {
                         Divider().opacity(0.3)
                     }
@@ -275,7 +263,7 @@ struct WineDetailView: View {
                     .foregroundColor(.secondary)
             }
         }
-        .cardStyle()
+        .pocketCardStyle()
     }
 
     // MARK: - Helpers
@@ -351,48 +339,16 @@ struct WineDetailView: View {
         guard !isSavingTasting else { return }
         isSavingTasting = true
         tastingSaveMessage = nil
-
         await appState.addTasting(
             wineId: wineId,
             rating: rating,
             context: contextText.isEmpty ? nil : contextText,
             notes: notesText.isEmpty ? nil : notesText
         )
-
         await MainActor.run {
             isSavingTasting = false
             tastingSaveMessage = "Saved."
-            // Optionally clear:
-            // contextText = ""
-            // notesText = ""
         }
     }
 }
 
-// MARK: - Shared card style
-
-
-
-private func placeholderBottle(color: String?) -> some View {
-    let baseColor: Color
-    switch color?.lowercased() {
-    case "red":
-        baseColor = .red
-    case "white":
-        baseColor = .yellow
-    case "rosé", "rose":
-        baseColor = .pink
-    case "sparkling":
-        baseColor = .gray
-    default:
-        baseColor = .secondary
-    }
-
-    return RoundedRectangle(cornerRadius: 8)
-        .fill(baseColor.opacity(0.3))
-        .frame(width: 80, height: 200)
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(baseColor.opacity(0.6), lineWidth: 1.5)
-        )
-}

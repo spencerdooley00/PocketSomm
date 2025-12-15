@@ -1,8 +1,9 @@
 //
-//  ProfileView.swift
+//  ProfileView_updated.swift
 //  PocketSomm
 //
 //  Created by Spencer Dooley on 11/27/25.
+//  Updated to apply PocketSomm design system styles.
 //
 
 import SwiftUI
@@ -14,10 +15,10 @@ struct ProfileView: View {
         ScrollView {
             VStack(spacing: 20) {
                 headerCard
-                summaryCardLink   // ✅ summary card
+                summaryCardLink
 
                 if let survey = appState.userProfile?.surveyAnswers {
-                    tasteProfileCard(survey)   // ✅ now in scope
+                    tasteProfileCard(survey)
                 } else {
                     emptyTasteProfileCard
                 }
@@ -48,10 +49,9 @@ struct ProfileView: View {
                 .font(.subheadline)
                 .foregroundColor(.secondary)
         }
-        .cardStyle()
+        .pocketCardStyle()
     }
 
-    // 🔹 NEW: summary card that links to the insight view
     private var summaryCardLink: some View {
         NavigationLink {
             ProfileSummaryView()
@@ -66,8 +66,9 @@ struct ProfileView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+        // Keep plain style for navigation link but apply shared card style
         .buttonStyle(.plain)
-        .cardStyle()
+        .pocketCardStyle()
     }
 
     private func tasteProfileCard(_ survey: TasteSurveyAnswers) -> some View {
@@ -94,14 +95,8 @@ struct ProfileView: View {
 
                 LazyVGrid(columns: columns, alignment: .leading, spacing: 8) {
                     ForEach(survey.favoriteStyles, id: \.self) { style in
-                        Text(styleLabel(style))
-                            .font(.footnote)
-                            .padding(.vertical, 4)
-                            .padding(.horizontal, 8)
-                            .background(Color.accentColor.opacity(0.12))
-                            .foregroundColor(.accentColor)
-                            .cornerRadius(10)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                        // Use TagChip from the design system for consistent styling
+                        TagChip(text: styleLabel(style))
                     }
                 }
             }
@@ -114,7 +109,7 @@ struct ProfileView: View {
             }
             .font(.subheadline)
         }
-        .cardStyle()
+        .pocketCardStyle()
     }
 
     private var emptyTasteProfileCard: some View {
@@ -134,9 +129,10 @@ struct ProfileView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 10)
             }
-            .buttonStyle(.borderedProminent)
+            // Apply primary button style for the call to action
+            .buttonStyle(PrimaryButtonStyle())
         }
-        .cardStyle()
+        .pocketCardStyle()
     }
 
     private var favoritesCard: some View {
@@ -151,6 +147,8 @@ struct ProfileView: View {
                     Label("Add by photo", systemImage: "camera.fill")
                         .font(.subheadline)
                 }
+                // Use plain button style for navigation links
+                .buttonStyle(.plain)
             }
 
             if appState.isLoadingProfile {
@@ -198,7 +196,7 @@ struct ProfileView: View {
                     .foregroundColor(.secondary)
             }
         }
-        .cardStyle()
+        .pocketCardStyle()
     }
 
     private var recommendationsPlaceholderCard: some View {
@@ -214,7 +212,7 @@ struct ProfileView: View {
                 .font(.footnote)
                 .foregroundColor(.secondary)
         }
-        .cardStyle()
+        .pocketCardStyle()
     }
 
     // MARK: - Helpers
@@ -243,14 +241,3 @@ struct ProfileView: View {
     }
 }
 
-// MARK: - Shared card style
-
-extension View {
-    func cardStyle() -> some View {
-        self
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.secondary.opacity(0.06))
-            .cornerRadius(18)
-    }
-}
