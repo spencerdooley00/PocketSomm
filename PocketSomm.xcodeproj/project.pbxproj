@@ -29,9 +29,22 @@
 		71E1F9AD2ED89987002EE889 /* PocketSommUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PocketSommUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		716520632EEF99A600EA3B75 /* Exceptions for "PocketSomm" folder in "PocketSomm" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 71E1F9932ED89984002EE889 /* PocketSomm */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		71E1F9962ED89984002EE889 /* PocketSomm */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				716520632EEF99A600EA3B75 /* Exceptions for "PocketSomm" folder in "PocketSomm" target */,
+			);
 			path = PocketSomm;
 			sourceTree = "<group>";
 		};
@@ -400,7 +413,9 @@
 				DEVELOPMENT_TEAM = 6YRU24FHG5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PocketSomm/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "PocketSomm needs camera access to let you add wines by taking photos of bottles.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Photo Library Usage";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Privacy - Photo Library Usage Description";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -434,7 +449,9 @@
 				DEVELOPMENT_TEAM = 6YRU24FHG5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PocketSomm/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "PocketSomm needs camera access to let you add wines by taking photos of bottles.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Photo Library Usage";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Privacy - Photo Library Usage Description";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
