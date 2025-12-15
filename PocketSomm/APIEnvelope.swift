@@ -1,23 +1,23 @@
-//
-//  APIEnvelope.swift
-//  PocketSomm
-//
-//  Created by Spencer Dooley on 12/14/25.
-//
-
-
 import Foundation
 
-struct APIEnvelope<T: Decodable>: Decodable {
-    let status: String
-    let data: T
+/// A generic wrapper for successful responses from the PocketSomm backend.
+///
+/// The backend returns JSON in the form `{ "status": "ok", "data": { ... } }`.
+/// Decoding into `APIEnvelope<T>` will extract the inner `data` payload as type `T`.
+public struct APIEnvelope<T: Decodable>: Decodable {
+    public let status: String
+    public let data: T
 }
 
-struct APIErrorEnvelope: Decodable {
-    struct Err: Decodable {
-        let code: Int
-        let message: String
-        let details: [String: String]?
+/// A wrapper for error responses from the backend.
+///
+/// Error payloads have the form:
+/// `{ "error": { "code": Int, "message": String, "details": Optional<[String: String]> } }`.
+public struct APIErrorEnvelope: Decodable {
+    public struct APIErrorDetail: Decodable {
+        public let code: Int
+        public let message: String
+        public let details: [String: String]?
     }
-    let error: Err
+    public let error: APIErrorDetail
 }
